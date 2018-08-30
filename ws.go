@@ -73,21 +73,3 @@ func (c *client) write() {
 		}
 	}
 }
-
-func (c *client) read() {
-	/*defer func() {
-		manager.unregister <- c
-		c.socket.Close()
-	}()
-
-	for {
-		_, message, err := c.socket.ReadMessage()
-		if err != nil {
-			manager.unregister <- c
-			c.socket.Close()
-			break
-		}
-		jsonMessage, _ := json.Marshal(&Message{Sender: c.id, Content: string(message)})
-		manager.broadcast <- jsonMessage
-	}*/
-}

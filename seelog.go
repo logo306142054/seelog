@@ -20,6 +20,11 @@ const (
 // BeeLogger references the used application logger.
 var SeeLogger = logs.GetSeelogger()
 
+// listen port
+func SetPort(port int)  {
+	go server(port)
+}
+
 // SetLevel sets the global logs level used by the simple logger.
 func SetLevel(l int) {
 	logs.SetLevel(l)
