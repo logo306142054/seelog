@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	TestLog  = "test.log"	// yourproject 日志位置
+	TestLog  = "test.logs"	// yourproject 日志位置
 	TestPort = 9999			// 查看日志时端口
 )
 

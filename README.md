@@ -1,38 +1,30 @@
-# seelog [![Build Status](https://travis-ci.org/xmge/seelog.svg?branch=master)](https://travis-ci.org/xmge/seelog) [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/xmge/seelog/blob/master/LICENSE)
+## 二版本功能
+### 一、与项目弱耦合
+功能一：直接监听特定文件，在特点端口将日志打印出来。
++ 监听特定文件
++ 监听文件夹
+
+### 二、整个项目使用seelog
 
 
-> 有了seelog,妈妈再也不用担心我登录服务器查看日志le...   
-项目地址：https://github.com/xmge/seelog    
-演示地址：http://seelog.xmge.top    
-欢迎各位gopher使用指正:smiley: 
+### log输出等级
+Trace、Debug、Info、Error、Fatal
 
-### 项目背景
-> A：我去:confused:,,程序又出问题了，你去看看日志到底是哪里错啦  
-  B：好好好，我马上登陆服务器看看    
-  B：对啦，服务器密码是啥来着....    
-  A：:cold_sweat: 密码是 &#￥&*@*~    
-  B：额，日志文件在哪呢    
-  A：...................    
-  C：要不项目集成seelog吧，集成特别简单，集成后直接打开浏览器就能看日志了
+### 输出target
+Console        输出到控制台
+File           输出到文件
+Mail           输出为邮件发送
+Database       输出到数据库
+Browser        输出到浏览器
 
-### 项目介绍
-* 与golang项目集成、提供浏览器实时查看日志的功能，类似 [tail -f xxx.log](https://www.cnblogs.com/fps2tao/p/7698224.html)
-* 支持多浏览器同时访问
-* 支持浏览器websocket断线重连
-* 支持暂停、清屏、截图、过滤功能
+### 输出格式的控制
 
-### 集成方式
-* 在项目中引入seelog, **go get github.com/xmge/seelog**
-* 在代码中 执行 **seelog.See(logpath,port)**
-* 在浏览器中访问 *http://host:port*
 
-### 项目展示
-![image](https://github.com/xmge/seelog/blob/master/demo.gif)
+## 核心卖点
+浏览器实时查看
 
-### 项目TODO
-* 程序中直接输出日志
-* 搜索
-* os.stat()延迟
-* 页面布局
-* 分布式
-
+### 浏览器功能
+1、需要认证可查看日志
+2、日志通过日志级别进行颜色区分
+3、可通过日志级别进行过滤
+4、暂停、截屏、清屏、过滤日志、查找

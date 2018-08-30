@@ -26,9 +26,9 @@ func page(w http.ResponseWriter, r *http.Request) {
         function connect (){
             var ws = new WebSocket("ws://"+ window.location.host +"/ws");
             ws.onmessage = function(e) {
-                console.log(filterText)
+                console.logs(filterText)
                 if (out && (filterText == "" || e.data.indexOf(filterText) != -1)){
-                    $('#log').append("<pre style='color: white;font-size: 15px'>"+ e.data +"</pre>").scrollTop($('#log')[0].scrollHeight)
+                    $('#logs').append("<pre style='color: white;font-size: 15px'>"+ e.data +"</pre>").scrollTop($('#logs')[0].scrollHeight)
                 }
             };
             ws.onclose = function () {
@@ -64,12 +64,12 @@ func page(w http.ResponseWriter, r *http.Request) {
 
             // 清屏
             $('#clear').click(function () {
-                $('#log').empty()
+                $('#logs').empty()
             })
 
             // 截屏
             $('#cut').click(function () {
-                printPhoto("log")
+                printPhoto("logs")
             })
 
             // 过滤
@@ -95,7 +95,7 @@ func page(w http.ResponseWriter, r *http.Request) {
                 // 加工image data，替换mime type
                 imgData = imgData.replace(_fixType(type),'image/octet-stream');
 
-                //console.log(imgData);
+                //console.logs(imgData);
 
                 var saveFile = function(data, filename){
                     var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
@@ -130,7 +130,7 @@ func page(w http.ResponseWriter, r *http.Request) {
         <span style="padding:1px;border:1px ; background:#FFF"><button style="width: auto">过滤</button><input id="filter" type="text"></span>
     </div>
 </header>
-<div id="log"></div>
+<div id="logs"></div>
 </body>
 
 <style>
@@ -140,7 +140,7 @@ func page(w http.ResponseWriter, r *http.Request) {
     #title {
 
     }
-    #log {
+    #logs {
         width:96%;
         height: 800px;
         background-color:#181818;

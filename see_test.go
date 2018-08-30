@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	TestLog  = "test.log"
+	TestLog  = "test.logs"
 	TestPort = 9999
 )
 
