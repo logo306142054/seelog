@@ -1,8 +1,8 @@
 package seelog
 
 import (
-	"github.com/xmge/seelog/v2/logs"
 	"strings"
+	"github.com/xmge/seelog/logs"
 )
 
 // Log levels to control the logging output. 提供给外部调用
