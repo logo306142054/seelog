@@ -3,6 +3,7 @@ package seelog
 import (
 	"golang.org/x/net/websocket"
 	"log"
+	"fmt"
 )
 
 //  websocket客户端
@@ -44,6 +45,8 @@ func (manager *clientManager) start() {
 				delete(manager.clients, conn)
 			}
 		case message := <-manager.broadcast:
+			fmt.Println("=============")
+			fmt.Println(message)
 			for conn := range manager.clients {
 				select {
 				case conn.send <- message:

@@ -26,7 +26,6 @@ func page(w http.ResponseWriter, r *http.Request) {
         function connect (){
             var ws = new WebSocket("ws://"+ window.location.host +"/ws");
             ws.onmessage = function(e) {
-                console.logs(filterText)
                 if (out && (filterText == "" || e.data.indexOf(filterText) != -1)){
                     $('#logs').append("<pre style='color: white;font-size: 15px'>"+ e.data +"</pre>").scrollTop($('#logs')[0].scrollHeight)
                 }

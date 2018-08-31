@@ -3,17 +3,9 @@ package seelog
 import (
 	"strings"
 	"github.com/xmge/seelog/logs"
+	"fmt"
 )
 
-// Log levels to control the logging output. 提供给外部调用
-const (
-	LevelAll = iota
-	LevelDebug
-	LevelInfo
-	LevelWarn
-	LevelError
-	LevelFatal
-)
 
 // BeeLogger references the used application logger.
 var SeeLogger = logs.GetSeeLogger()
@@ -22,6 +14,7 @@ var SeeLogger = logs.GetSeeLogger()
 // listen port
 func SetPort(port int)  {
 	go server(port)
+	go manager.start()
 }
 
 // SetLevel sets the global logs level used by the simple logger.
@@ -61,6 +54,8 @@ func Info(v ...interface{}) {
 
 // Debug logs a message at debug level.
 func Debug(v ...interface{}) {
+	fmt.Println(v)
+	manager.broadcast <- []byte(fmt.Sprintf("%v",v))
 	logs.Debug(generateFmtStr(len(v)), v...)
 }
 
