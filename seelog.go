@@ -7,18 +7,17 @@ import (
 
 // Log levels to control the logging output. 提供给外部调用
 const (
-	LevelEmergency = iota
-	LevelAlert
-	LevelCritical
-	LevelError
-	LevelWarning
-	LevelNotice
-	LevelInformational
+	LevelAll = iota
 	LevelDebug
+	LevelInfo
+	LevelWarn
+	LevelError
+	LevelFatal
 )
 
 // BeeLogger references the used application logger.
-var SeeLogger = logs.GetSeelogger()
+var SeeLogger = logs.GetSeeLogger()
+
 
 // listen port
 func SetPort(port int)  {
