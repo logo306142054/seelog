@@ -1,8 +1,10 @@
 package seelog
 
 import (
-	"golang.org/x/net/websocket"
+	"fmt"
 	"log"
+
+	"golang.org/x/net/websocket"
 )
 
 //  websocket客户端
@@ -41,6 +43,7 @@ func (manager *clientManager) start() {
 		case conn := <-manager.unregister:
 			if _, ok := manager.clients[conn]; ok {
 				close(conn.send)
+				conn.socket.Close()
 				delete(manager.clients, conn)
 			}
 		case message := <-manager.broadcast:
@@ -48,8 +51,6 @@ func (manager *clientManager) start() {
 				select {
 				case conn.send <- message:
 				default:
-					close(conn.send)
-					delete(manager.clients, conn)
 				}
 			}
 		}
@@ -57,37 +58,23 @@ func (manager *clientManager) start() {
 }
 
 func (c *client) write() {
-	defer func() {
-		manager.unregister <- c
-		c.socket.Close()
-	}()
-
-	for {
-		select {
-		case message, ok := <-c.send:
-			if !ok {
-				c.socket.WriteClose(1)
-				return
-			}
-			c.socket.Write(message)
+	for msg := range c.send {
+		_, err := c.socket.Write(msg)
+		if err != nil {
+			fmt.Println("write msg failed. ", err)
+			break
 		}
 	}
+	log.Println("web socket closed")
 }
 
 func (c *client) read() {
-	/*defer func() {
-		manager.unregister <- c
-		c.socket.Close()
-	}()
-
+	buf := make([]byte, 100)
 	for {
-		_, message, err := c.socket.ReadMessage()
+		_, err := c.socket.Read(buf)
 		if err != nil {
 			manager.unregister <- c
-			c.socket.Close()
-			break
+			return
 		}
-		jsonMessage, _ := json.Marshal(&Message{Sender: c.id, Content: string(message)})
-		manager.broadcast <- jsonMessage
-	}*/
+	}
 }
