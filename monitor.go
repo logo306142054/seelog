@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 	"time"
+
+	"github.com/hpcloud/tail"
 )
 
 // 监控日志文件
@@ -14,47 +16,28 @@ func monitor(filePath string) {
 		}
 	}()
 
+	//fileInfo := checkFile(filePath)
+	checkFile(filePath)
+
+	t, _ := tail.TailFile(filePath, tail.Config{Follow: true, ReOpen: true})
+	for line := range t.Lines {
+		//fmt.Println(line.Text)
+		manager.broadcast <- []byte(line.Text)
+	}
+}
+
+//等待文件被创建
+func checkFile(filePath string) os.FileInfo {
 	var fileInfo os.FileInfo
 	var err error
-	for i :=1; i <= 10; i++{
-		fileInfo, err = os.Stat(filePath)
-		if err != nil {
-			log.Printf("[seelog] error:%v", err.Error())
-			continue
-		}
-		break
-	}
-
-	offset := fileInfo.Size()
 	for {
 		fileInfo, err = os.Stat(filePath)
 		if err != nil {
 			log.Printf("[seelog] error:%v", err.Error())
-			continue
+			time.Sleep(10 * time.Millisecond)
+		} else {
+			break
 		}
-		newOffset := fileInfo.Size()
-		if offset < newOffset {
-			msg := make([]byte, newOffset-offset)
-			file, err := os.Open(filePath)
-			if err != nil {
-				log.Printf("[seelog] error:%v", err.Error())
-				continue
-			}
-			_, err = file.Seek(offset, 0)
-			if err != nil {
-				log.Printf("[seelog] error:%v", err.Error())
-			}
-
-			_, err = file.Read(msg)
-			if err != nil {
-				log.Printf("[seelog] error:%v", err.Error())
-			}
-			manager.broadcast <- msg
-			offset = newOffset
-			file.Close()
-		}
-		offset = newOffset
-		time.Sleep(200 * time.Millisecond)
 	}
-
+	return fileInfo
 }
