@@ -2,13 +2,14 @@ package seelog
 
 import (
 	"log"
+	"time"
 )
 
 //  启动seelog
-func See(filePath string,port int) {
+func See(filePath string, port int) {
 
 	// 检查参数
-	if !checkParam(filePath,port){
+	if !checkParam(filePath, port) {
 		return
 	}
 
@@ -18,10 +19,13 @@ func See(filePath string,port int) {
 	go monitor(filePath)
 	// 开启httpServer
 	go server(port)
+
+	//等待服务运行起再返回，否则可能导致开头的部分日志无法输出到网页
+	time.Sleep(200 * time.Millisecond)
 }
 
 // 参数验证
-func checkParam(filePath string,port int) bool {
+func checkParam(filePath string, port int) bool {
 	if filePath == "" {
 		log.Println("filePath 不可为空")
 		return false
@@ -32,6 +36,3 @@ func checkParam(filePath string,port int) bool {
 	}
 	return true
 }
-
-
-
