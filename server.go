@@ -1,12 +1,15 @@
 package seelog
 
 import (
-	"net/http"
 	"fmt"
-	"log"
-	"golang.org/x/net/websocket"
-	"time"
 	"html/template"
+	"log"
+	"net/http"
+	"path"
+	"runtime"
+	"time"
+
+	"golang.org/x/net/websocket"
 )
 
 // 开启 httpServer
@@ -24,8 +27,10 @@ func server(port int)  {
 	http.Handle("/ws", websocket.Handler(genConn))
 	// 测试
 	http.HandleFunc("/test", func(writer http.ResponseWriter, request *http.Request) {
-		t, err := template.ParseFiles("index.html")
-		if (err != nil) {
+		_, currentfile, _, _ := runtime.Caller(0)
+		filename := path.Join(path.Dir(currentfile), "index.html")
+		t, err := template.ParseFiles(filename)
+		if err != nil {
 			log.Println(err)
 		}
 		t.Execute(writer, nil)
